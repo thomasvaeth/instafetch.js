@@ -53,7 +53,50 @@
 
 	'use strict';
 
-	var fetchJsonp = __webpack_require__(2);
+	var _fetchJsonp = __webpack_require__(2);
+
+	var _fetchJsonp2 = _interopRequireDefault(_fetchJsonp);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Instafetch = function () {
+	  var s = void 0;
+
+	  return {
+	    settings: {
+	      url: 'https://api.instagram.com/v1/users/',
+	      defaults: {
+	        userId: null,
+	        accessToken: null
+	      }
+	    },
+
+	    init: function init() {
+	      s = this.settings;
+	      this.fetchFeed(s.defaults);
+	    },
+
+	    fetchFeed: function fetchFeed(obj) {
+	      if (obj.userId != undefined && obj.accessToken != undefined) {
+	        var url = s.url + obj.userId + '/media/recent/?access_token=' + obj.accessToken + '&callback=?';
+
+	        (0, _fetchJsonp2.default)(url).then(function (res) {
+	          return res.json();
+	        }).then(function (data) {
+	          console.log(data);
+	        }).catch(function () {
+	          console.log('Error');
+	        });
+	      } else {
+	        console.log('User ID and Access Token are required for the Instagram API.');
+	      }
+	    }
+	  };
+	}();
+
+	document.addEventListener('DOMContentLoaded', function () {
+	  Instafetch.init();
+	});
 
 /***/ },
 /* 2 */
