@@ -16,7 +16,7 @@
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
-    userId: 123,
+    userId: null,
     accessToken: null
   };
 
