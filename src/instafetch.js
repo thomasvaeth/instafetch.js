@@ -1,40 +1,54 @@
-import fetchJsonp from 'fetch-jsonp';
+(function (root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define([], factory(root));
+  } else if (typeof exports === 'object') {
+    module.exports = factory(root);
+  } else {
+    root.instafetch = factory(root);
+  }
+})(typeof global !== 'undefined' ? global : this.window || this.global, function (root) {
 
-const Instafetch = (function() {
-  let s;
+  'use strict';
 
-  return {
-    settings: {
-      url: 'https://api.instagram.com/v1/users/',
-      defaults: {
-        userId: null,
-        accessToken: null
+  var instafetch = {};
+  var supports = !!document.querySelector && !!root.addEventListener;
+  var settings;
+  var baseUrl = 'https://api.instagram.com/v1/users/';
+
+  var defaults = {
+    userId: 123,
+    accessToken: null
+  };
+
+  var forEach = function (collection, callback, scope) {
+    if (Object.prototype.toString.call(collection) === '[object Object]') {
+      for (var prop in collection) {
+        if (Object.prototype.hasOwnProperty.call(collection, prop)) callback.call(scope, collection[prop], prop, collection);
       }
-    },
-
-    init: function() {
-      s = this.settings;
-      this.fetchFeed(s.defaults);
-    },
-
-    fetchFeed: function(obj) {
-      if (obj.userId != undefined && obj.accessToken != undefined) {
-        var url = s.url + obj.userId + '/media/recent/?access_token=' + obj.accessToken + '&callback=?';
-
-        fetchJsonp(url).then(res => {
-          return res.json();
-        }).then(data => {
-          console.log(data);
-        }).catch(() => {
-          console.log('Error');
-        });
-      } else {
-        console.log('User ID and Access Token are required for the Instagram API.');
+    } else {
+      for (var i = 0, len = collection.length; i < len; i++) {
+        callback.call(scope, collection[i], i, collection);
       }
     }
-  }
-})();
+  };
 
-document.addEventListener('DOMContentLoaded', function() {
-  Instafetch.init();
+  var extend = function(defaults, options) {
+    var extended = {};
+    forEach(defaults, function (value, prop) {
+      extended[prop] = defaults[prop];
+    });
+    forEach(options, function (value, prop) {
+      extended[prop] = options[prop];
+    });
+    return extended;
+  };
+
+  instafetch.init = function(options) {
+    if (!supports) return;
+
+    settings = extend(defaults, options || {});
+    console.log(settings);
+  };
+
+  return instafetch;
 });
