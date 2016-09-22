@@ -17,7 +17,8 @@
 
   var defaults = {
     userId: null,
-    accessToken: null
+    accessToken: null,
+    numOfPics: 20
   };
 
   var forEach = function (collection, callback, scope) {
@@ -43,11 +44,28 @@
     return extended;
   };
 
+  instafetch.fetchFeed = function(defaults) {
+    if (settings.userId !== null && settings.accessToken !== null) {
+      var url = baseUrl + settings.userId + '/media/recent/?access_token=' + settings.accessToken + '&count=' + settings.numOfPics + '&callback=?';
+
+      fetchJsonp(url).then(function(response) {
+        return response.json();
+      }).then(function(json) {
+        console.log(json);
+      }).catch(function(error) {
+        console.log(error);
+      });
+    } else {
+      console.log('User ID and Access Token are required.')
+    }
+  }
+
   instafetch.init = function(options) {
     if (!supports) return;
 
     settings = extend(defaults, options || {});
-    console.log(settings);
+
+    instafetch.fetchFeed();
   };
 
   return instafetch;
