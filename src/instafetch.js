@@ -16,13 +16,14 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, url;
+  var settings, checked, url, targetEl, figure, img;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   // Default settings
   var defaults = {
     userId: null,
     accessToken: null,
+    target: 'instafetch',
     numOfPics: 20,
     caption: false
   };
@@ -52,7 +53,6 @@
     }
   };
 
-
   /**
    * Merge defaults with user options
    * @private
@@ -71,6 +71,36 @@
     return extended;
   };
 
+  /**
+   * Check typeof settings
+   * @private
+   * @param {Object} options Merged values of defaults and options
+   * @returns {Boolean} Return false if incorrect
+   */
+  var checkSettings = function(options) {
+    if (typeof options.userId !== 'string') {
+      console.log('userId must be a string.');
+      return false;
+    }
+    if (typeof options.accessToken !== 'string') {
+      console.log('accessToken must be a string.');
+      return false;
+    }
+    if (typeof options.target !== 'string') {
+      console.log('target must be a string.');
+      return false;
+    }
+    if (typeof options.numOfPics !== 'number') {
+      console.log('numOfPics must be a number.');
+      return false;
+    }
+    if (typeof options.caption !== 'boolean') {
+      console.log('caption must be a boolean.');
+      return false;
+    }
+
+    return true;
+  };
 
   /**
    * Fetch Instagram API with settings
@@ -79,7 +109,7 @@
    * @returns {Object} JSON data
    */
   var fetchFeed = function(options) {
-    if (options.userId !== null && options.accessToken !== null) {
+    if (options.userId && options.accessToken) {
 
       if (options.userId === options.accessToken.split('.')[0]) {
         url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
@@ -87,16 +117,20 @@
         fetchJsonp(url).then(function(response) {
           return response.json();
         }).then(function(json) {
-          displayFeed(json);
+          if (json.meta.code === 200) {
+            displayFeed(json, options);
+          } else {
+            console.log(json.meta.error_message);
+          }
         }).catch(function(error) {
           console.log(error);
         });
       } else {
-        console.log('Access Token is invalid for User ID');
+        console.log('accessToken is invalid for userId.');
       }
 
     } else {
-      console.log('User ID and Access Token are required.');
+      console.log('userId and accessToken are required.');
     }
   };
 
@@ -104,13 +138,25 @@
    * Display JSON data from fetch
    * @private
    * @param {Object} json JSON data
-   * @returns
+   * @returns If no element, stop
    */
-  var displayFeed = function(json) {
+  var displayFeed = function(json, options) {
+    targetEl = document.getElementById(options.target);
+    if (!targetEl) {
+      console.log('No element with id="' + options.target + '" was found on the page.');
+      return;
+    }
+
     json.data.forEach(function(data) {
 
       if (data.type === 'image') {
         console.log(data);
+
+        figure = document.createElement('figure');
+        img = document.createElement('img');
+        img.src = data.images.standard_resolution.url;
+        figure.appendChild(img);
+        targetEl.appendChild(figure);
       } else if (data.type === 'video') {
         console.log(data);
       }
@@ -119,7 +165,7 @@
   };
 
   /**
-   * Destroy the current initialization.
+   * Destroy the current initialization
    * @public
    */
   instafetch.destroy = function() {
@@ -130,7 +176,11 @@
 
     // Reset varaibles
     settings = null;
+    checked = null;
     url = null;
+    targetEl = null;
+    figure = null;
+    img = null;
   };
 
   /**
@@ -151,7 +201,11 @@
     settings = extend(defaults, options || {});
 
     // Do something...
-    fetchFeed(settings);
+    checked = checkSettings(settings);
+
+    if (checked) {
+      fetchFeed(settings);
+    }
   };
 
   //
