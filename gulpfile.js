@@ -4,6 +4,7 @@ var gulp = require('gulp');
 var concat = require('gulp-concat');
 var eslint = require('gulp-eslint');
 var rename = require('gulp-rename');
+var strip = require('gulp-strip-comments');
 var uglify = require('gulp-uglify');
 
 gulp.task('lint', function() {
@@ -19,6 +20,7 @@ gulp.task('concatScripts', function() {
     'src/instafetch.js'
   ])
   .pipe(concat('instafetch.js'))
+  .pipe(strip())
   .pipe(gulp.dest('./dist'));
 });
 

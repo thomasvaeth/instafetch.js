@@ -23,11 +23,7 @@
     return 'jsonp_' + Date.now() + '_' + Math.ceil(Math.random() * 100000);
   }
 
-  // Known issue: Will throw 'Uncaught ReferenceError: callback_*** is not defined'
-  // error if request timeout
   function clearFunction(functionName) {
-    // IE8 throws an exception when you try to delete a property on window
-    // http://stackoverflow.com/a/1824228/751089
     try {
       delete window[functionName];
     } catch (e) {
@@ -43,7 +39,6 @@
   function fetchJsonp(_url) {
     var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
-    // to avoid param reassign
     var url = _url;
     var timeout = options.timeout || defaultOptions.timeout;
     var jsonpCallback = options.jsonpCallback || defaultOptions.jsonpCallback;
@@ -57,7 +52,6 @@
       window[callbackFunction] = function (response) {
         resolve({
           ok: true,
-          // keep consistent with fetch API
           json: function json() {
             return Promise.resolve(response);
           }
@@ -70,7 +64,6 @@
         clearFunction(callbackFunction);
       };
 
-      // Check if the user set their own params, and if not add a ? to start a list of params
       url += url.indexOf('?') === -1 ? '?' : '&';
 
       var jsonpScript = document.createElement('script');
@@ -87,22 +80,6 @@
     });
   }
 
-  // export as global function
-  /*
-  let local;
-  if (typeof global !== 'undefined') {
-    local = global;
-  } else if (typeof self !== 'undefined') {
-    local = self;
-  } else {
-    try {
-      local = Function('return this')();
-    } catch (e) {
-      throw new Error('polyfill failed because global object is unavailable in this environment');
-    }
-  }
-  local.fetchJsonp = fetchJsonp;
-  */
 
   module.exports = fetchJsonp;
 });
@@ -118,9 +95,10 @@
 
   'use strict';
 
+
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, url, json;
+  var settings, url;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
@@ -130,10 +108,13 @@
     caption: false
   };
 
+
   var forEach = function(collection, callback, scope) {
     if (Object.prototype.toString.call(collection) === '[object Object]') {
       for (var prop in collection) {
-        if (Object.prototype.hasOwnProperty.call(collection, prop)) callback.call(scope, collection[prop], prop, collection);
+        if (Object.prototype.hasOwnProperty.call(collection, prop)) {
+          callback.call(scope, collection[prop], prop, collection);
+        }
       }
     } else {
       for (var i = 0, len = collection.length; i < len; i++) {
@@ -141,6 +122,7 @@
       }
     }
   };
+
 
   var extend = function(defaults, options) {
     var extended = {};
@@ -153,12 +135,13 @@
     return extended;
   };
 
+
   var fetchFeed = function(options) {
-    if (options.userId !== null && options.accessToken !== null) { 
+    if (options.userId !== null && options.accessToken !== null) {
 
       if (options.userId === options.accessToken.split('.')[0]) {
-        var url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
-        
+        url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
+
         fetchJsonp(url).then(function(response) {
           return response.json();
         }).then(function(json) {
@@ -178,7 +161,7 @@
   var displayFeed = function(json) {
     json.data.forEach(function(data) {
 
-      if (data.type === "image") {
+      if (data.type === 'image') {
         console.log(data);
       } else if (data.type === 'video') {
         console.log(data);
@@ -188,22 +171,26 @@
   };
 
   instafetch.destroy = function() {
-    if (!settings) return;
+    if (!settings) {
+      return;
+    }
 
     settings = null;
     url = null;
-    json = null;
   };
 
   instafetch.init = function(options) {
-    if (!supports) return;
+    if (!supports) {
+      return;
+    }
 
     instafetch.destroy();
 
     settings = extend(defaults, options || {});
-    
+
     fetchFeed(settings);
   };
+
 
   return instafetch;
 });

@@ -13,6 +13,7 @@
     "gulp-concat": "^2.6.0",
     "gulp-eslint": "^3.0.1",
     "gulp-rename": "^1.2.2",
+    "gulp-strip-comments": "^2.4.3",
     "gulp-uglify": "^2.0.0"
   },
   "dependencies": {
