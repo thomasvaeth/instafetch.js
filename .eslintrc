@@ -1,0 +1,20 @@
+{
+  "rules": {
+    "block-spacing": [2, "never"],
+    "brace-style": [2],
+    "camelcase": [2],
+    "comma-spacing": [2],
+    "curly": [2, "all"],
+    "eqeqeq": [1],
+    "no-else-return": [2],
+    "no-empty-function": [2],
+    "no-irregular-whitespace": [1],
+    "no-multi-spaces": [2],
+    "no-param-reassign": [2],
+    "no-return-assign": [2],
+    "no-trailing-spaces": [1],
+    "no-unused-vars": [2],
+    "quotes": [2, "single"],
+    "semi": [2, "always"]
+  }
+}

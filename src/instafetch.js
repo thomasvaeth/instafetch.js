@@ -12,7 +12,7 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, url, json;
+  var settings, url;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
@@ -25,7 +25,9 @@
   var forEach = function(collection, callback, scope) {
     if (Object.prototype.toString.call(collection) === '[object Object]') {
       for (var prop in collection) {
-        if (Object.prototype.hasOwnProperty.call(collection, prop)) callback.call(scope, collection[prop], prop, collection);
+        if (Object.prototype.hasOwnProperty.call(collection, prop)) {
+          callback.call(scope, collection[prop], prop, collection);
+        }
       }
     } else {
       for (var i = 0, len = collection.length; i < len; i++) {
@@ -46,11 +48,11 @@
   };
 
   var fetchFeed = function(options) {
-    if (options.userId !== null && options.accessToken !== null) { 
+    if (options.userId !== null && options.accessToken !== null) {
 
       if (options.userId === options.accessToken.split('.')[0]) {
-        var url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
-        
+        url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
+
         fetchJsonp(url).then(function(response) {
           return response.json();
         }).then(function(json) {
@@ -80,20 +82,23 @@
   };
 
   instafetch.destroy = function() {
-    if (!settings) return;
+    if (!settings) {
+      return;
+    }
 
     settings = null;
     url = null;
-    json = null;
   };
 
   instafetch.init = function(options) {
-    if (!supports) return;
+    if (!supports) {
+      return;
+    }
 
     instafetch.destroy();
 
     settings = extend(defaults, options || {});
-    
+
     fetchFeed(settings);
   };
 

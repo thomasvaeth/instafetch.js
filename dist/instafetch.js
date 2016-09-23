@@ -178,7 +178,7 @@
   var displayFeed = function(json) {
     json.data.forEach(function(data) {
 
-      if (data.type === 'image') {
+      if (data.type === "image") {
         console.log(data);
       } else if (data.type === 'video') {
         console.log(data);
