@@ -106,7 +106,7 @@
 
   module.exports = fetchJsonp;
 });
-(function (root, factory) {
+(function(root, factory) {
   if (typeof define === 'function' && define.amd) {
     define([], factory(root));
   } else if (typeof exports === 'object') {
@@ -120,16 +120,17 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings;
+  var settings, url, json;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
     userId: null,
     accessToken: null,
-    numOfPics: 20
+    numOfPics: 20,
+    caption: false
   };
 
-  var forEach = function (collection, callback, scope) {
+  var forEach = function(collection, callback, scope) {
     if (Object.prototype.toString.call(collection) === '[object Object]') {
       for (var prop in collection) {
         if (Object.prototype.hasOwnProperty.call(collection, prop)) callback.call(scope, collection[prop], prop, collection);
@@ -143,37 +144,65 @@
 
   var extend = function(defaults, options) {
     var extended = {};
-    forEach(defaults, function (value, prop) {
+    forEach(defaults, function(value, prop) {
       extended[prop] = defaults[prop];
     });
-    forEach(options, function (value, prop) {
+    forEach(options, function(value, prop) {
       extended[prop] = options[prop];
     });
     return extended;
   };
 
-  instafetch.fetchFeed = function(defaults) {
-    if (settings.userId !== null && settings.accessToken !== null) {
-      var url = baseUrl + settings.userId + '/media/recent/?access_token=' + settings.accessToken + '&count=' + settings.numOfPics + '&callback=?';
+  var fetchFeed = function(options) {
+    if (options.userId !== null && options.accessToken !== null) { 
 
-      fetchJsonp(url).then(function(response) {
-        return response.json();
-      }).then(function(json) {
-        console.log(json);
-      }).catch(function(error) {
-        console.log(error);
-      });
+      if (options.userId === options.accessToken.split('.')[0]) {
+        var url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
+        
+        fetchJsonp(url).then(function(response) {
+          return response.json();
+        }).then(function(json) {
+          displayFeed(json);
+        }).catch(function(error) {
+          console.log(error);
+        });
+      } else {
+        console.log('Access Token is invalid for User ID');
+      }
+
     } else {
-      console.log('User ID and Access Token are required.')
+      console.log('User ID and Access Token are required.');
     }
-  }
+  };
+
+  var displayFeed = function(json) {
+    json.data.forEach(function(data) {
+
+      if (data.type === 'image') {
+        console.log(data);
+      } else if (data.type === 'video') {
+        console.log(data);
+      }
+
+    });
+  };
+
+  instafetch.destroy = function() {
+    if (!settings) return;
+
+    settings = null;
+    url = null;
+    json = null;
+  };
 
   instafetch.init = function(options) {
     if (!supports) return;
 
-    settings = extend(defaults, options || {});
+    instafetch.destroy();
 
-    instafetch.fetchFeed();
+    settings = extend(defaults, options || {});
+    
+    fetchFeed(settings);
   };
 
   return instafetch;
