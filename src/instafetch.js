@@ -16,7 +16,7 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, checked, url, targetEl, figure, img;
+  var settings, checked, url, targetEl, article, figure, img, div, p;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   // Default settings
@@ -72,7 +72,7 @@
   };
 
   /**
-   * Check typeof settings
+   * Check typeof of settings
    * @private
    * @param {Object} options Merged values of defaults and options
    * @returns {Boolean} Return false if incorrect
@@ -138,7 +138,7 @@
    * Display JSON data from fetch
    * @private
    * @param {Object} json JSON data
-   * @returns If no element, stop
+   * @returns Stop if no element, display if element
    */
   var displayFeed = function(json, options) {
     targetEl = document.getElementById(options.target);
@@ -148,19 +148,22 @@
     }
 
     json.data.forEach(function(data) {
+      article = document.createElement('article');
+      figure = document.createElement('figure');
+      img = document.createElement('img');
+      img.src = data.images.standard_resolution.url;
+      figure.appendChild(img);
+      article.appendChild(figure);
 
-      if (data.type === 'image') {
-        console.log(data);
-
-        figure = document.createElement('figure');
-        img = document.createElement('img');
-        img.src = data.images.standard_resolution.url;
-        figure.appendChild(img);
-        targetEl.appendChild(figure);
-      } else if (data.type === 'video') {
-        console.log(data);
+      if (options.caption) {
+        div = document.createElement('div');
+        p = document.createElement('p');
+        p.innerHTML = data.caption.text;
+        div.appendChild(p);
+        article.appendChild(div);
       }
 
+      targetEl.appendChild(article);
     });
   };
 
@@ -179,8 +182,11 @@
     checked = null;
     url = null;
     targetEl = null;
+    article = null;
     figure = null;
     img = null;
+    div = null;
+    p = null;
   };
 
   /**

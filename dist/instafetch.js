@@ -98,7 +98,7 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, checked, url, targetEl, figure, img;
+  var settings, checked, url, targetEl, article, figure, img, div, p;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
@@ -194,19 +194,22 @@
     }
 
     json.data.forEach(function(data) {
+      article = document.createElement('article');
+      figure = document.createElement('figure');
+      img = document.createElement('img');
+      img.src = data.images.standard_resolution.url;
+      figure.appendChild(img);
+      article.appendChild(figure);
 
-      if (data.type === 'image') {
-        console.log(data);
-
-        figure = document.createElement('figure');
-        img = document.createElement('img');
-        img.src = data.images.standard_resolution.url;
-        figure.appendChild(img);
-        targetEl.appendChild(figure);
-      } else if (data.type === 'video') {
-        console.log(data);
+      if (options.caption) {
+        div = document.createElement('div');
+        p = document.createElement('p');
+        p.innerHTML = data.caption.text;
+        div.appendChild(p);
+        article.appendChild(div);
       }
 
+      targetEl.appendChild(article);
     });
   };
 
@@ -219,8 +222,11 @@
     checked = null;
     url = null;
     targetEl = null;
+    article = null;
     figure = null;
     img = null;
+    div = null;
+    p = null;
   };
 
   instafetch.init = function(options) {

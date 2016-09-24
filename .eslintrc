@@ -1,5 +1,6 @@
 {
   "rules": {
+    "block-scoped-var": [1],
     "block-spacing": [2, "never"],
     "brace-style": [2],
     "camelcase": [2],
@@ -13,8 +14,10 @@
     "no-param-reassign": [2],
     "no-return-assign": [2],
     "no-trailing-spaces": [1],
+    "no-unreachable": [2],
     "no-unused-vars": [2],
     "quotes": [2, "single"],
-    "semi": [2, "always"]
+    "semi": [2, "always"],
+    "valid-typeof": [2]
   }
 }
