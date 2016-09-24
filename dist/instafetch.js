@@ -98,7 +98,7 @@
 
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
-  var settings, checked, url, targetEl, article, figure, img, div, p;
+  var settings, checked, url, targetEl, article, a, figure, img, div, p;
   var baseUrl = 'https://api.instagram.com/v1/users/';
 
   var defaults = {
@@ -195,18 +195,22 @@
 
     json.data.forEach(function(data) {
       article = document.createElement('article');
+      a = document.createElement('a');
+      a.href = data.link;
+      a.target = '_blank';
       figure = document.createElement('figure');
       img = document.createElement('img');
       img.src = data.images.standard_resolution.url;
       figure.appendChild(img);
-      article.appendChild(figure);
+      a.appendChild(figure);
+      article.appendChild(a);
 
       if (options.caption) {
         div = document.createElement('div');
         p = document.createElement('p');
         p.innerHTML = data.caption.text;
         div.appendChild(p);
-        article.appendChild(div);
+        a.appendChild(div);
       }
 
       targetEl.appendChild(article);
@@ -223,6 +227,7 @@
     url = null;
     targetEl = null;
     article = null;
+    a = null;
     figure = null;
     img = null;
     div = null;
