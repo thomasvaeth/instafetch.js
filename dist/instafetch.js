@@ -99,10 +99,9 @@
   var instafetch = {};
   var supports = !!document.querySelector && !!root.addEventListener;
   var settings, checked, url, targetEl, article, a, figure, img, div, p;
-  var baseUrl = 'https://api.instagram.com/v1/users/';
+  var baseUrl = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
 
   var defaults = {
-    userId: null,
     accessToken: null,
     target: 'instafetch',
     numOfPics: 20,
@@ -136,10 +135,6 @@
   };
 
   var checkSettings = function(options) {
-    if (typeof options.userId !== 'string') {
-      console.log('userId must be a string.');
-      return false;
-    }
     if (typeof options.accessToken !== 'string') {
       console.log('accessToken must be a string.');
       return false;
@@ -161,29 +156,19 @@
   };
 
   var fetchFeed = function(options) {
-    if (options.userId && options.accessToken) {
+    url = baseUrl + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
 
-      if (options.userId === options.accessToken.split('.')[0]) {
-        url = baseUrl + options.userId + '/media/recent/?access_token=' + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
-
-        fetchJsonp(url).then(function(response) {
-          return response.json();
-        }).then(function(json) {
-          if (json.meta.code === 200) {
-            displayFeed(json, options);
-          } else {
-            console.log(json.meta.error_message);
-          }
-        }).catch(function(error) {
-          console.log(error);
-        });
+    fetchJsonp(url).then(function(response) {
+      return response.json();
+    }).then(function(json) {
+      if (json.meta.code === 200) {
+        displayFeed(json, options);
       } else {
-        console.log('accessToken is invalid for userId.');
+        console.log(json.meta.error_message);
       }
-
-    } else {
-      console.log('userId and accessToken are required.');
-    }
+    }).catch(function(error) {
+      console.log(error);
+    });
   };
 
   var displayFeed = function(json, options) {
