@@ -1,6 +1,6 @@
 {
   "name": "instafetch.js",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -9,14 +9,16 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "browserify": "^13.1.0",
     "gulp": "^3.9.1",
-    "gulp-concat": "^2.6.0",
+    "gulp-browserify": "^0.5.1",
     "gulp-eslint": "^3.0.1",
     "gulp-rename": "^1.2.2",
     "gulp-strip-comments": "^2.4.3",
     "gulp-uglify": "^2.0.0"
   },
   "dependencies": {
+    "es6-promise": "^4.0.3",
     "fetch-jsonp": "^1.0.1"
   }
 }
