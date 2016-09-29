@@ -1,13 +1,23 @@
 {
   "name": "instafetch.js",
   "version": "1.2.0",
-  "description": "",
-  "main": "index.js",
+  "description": "A 10KB JavaScript plugin for the Instagram API (without jQuery).",
+  "main": "./dist/instafetch.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/thomasvaeth/instafetch.js.git"
+  },
+  "homepage": "https://github.com/thomasvaeth/instafetch.js",
+  "bugs": "https://github.com/thomasvaeth/instafetch.js/issues",
   "scripts": {
     "start": "gulp"
   },
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "fetch",
+    "instagram"
+  ],
+  "author": "Thomas Vaeth <thomas.vaeth@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "browserify": "^13.1.0",
     "gulp": "^3.9.1",

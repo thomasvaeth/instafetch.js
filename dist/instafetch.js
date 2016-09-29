@@ -627,8 +627,8 @@ Promise.Promise = Promise;
 return Promise;
 
 })));
-}).call(this,require("7YKIPe"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"7YKIPe":3}],2:[function(require,module,exports){
+}).call(this,require("1YiZ5S"),typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"1YiZ5S":3}],2:[function(require,module,exports){
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['exports', 'module'], factory);

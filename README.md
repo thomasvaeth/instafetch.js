@@ -42,7 +42,7 @@ Instafetch.js was only 3KB initially, but those 3KB didn't support any version o
 * Initial release
 
 ## Issues
-Please submit any other issues [here](https://github.com/thomasvaeth/instafetch.js/issues).
+Please submit any issues [here](https://github.com/thomasvaeth/instafetch.js/issues).
 
 ## License
 Instafetch.js is licensed under the MIT License.
