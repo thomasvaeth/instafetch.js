@@ -1,11 +1,11 @@
 'use strict';
 
 var gulp = require('gulp');
+var browserify = require('gulp-browserify');
 var eslint = require('gulp-eslint');
 var rename = require('gulp-rename');
 var strip = require('gulp-strip-comments');
 var uglify = require('gulp-uglify');
-var browserify = require('gulp-browserify');
 
 gulp.task('lint', function() {
   return gulp.src('./src/**/*.js')
