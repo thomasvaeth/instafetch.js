@@ -16,7 +16,7 @@
     "fetch",
     "instagram"
   ],
-  "author": "Thomas Vaeth <thomas.vaeth@gmail.com>",
+  "author": "Thomas Vaeth <thomas.vaeth@gmail.com> (http://thomasvaeth.com/)",
   "license": "MIT",
   "devDependencies": {
     "browserify": "^13.1.0",

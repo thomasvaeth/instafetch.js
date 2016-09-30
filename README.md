@@ -2,7 +2,12 @@
 Instafetch.js is a 10KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
 
 ## Installation
-Instafetch.js is only available on GitHub. Download the script or the minified version in the ````dist```` folder.
+
+```
+bower install instafetch.js
+```
+
+Instafetch.js is available on Bower and GitHub. Download the script or the minified version in the ````dist```` folder.
 
 ```html
 <script type="text/javascript" src="path/to/instafetch.min.js"></script>
@@ -27,7 +32,7 @@ Instafetch.js will look for an element with the ID of instafetch by default. The
 The plugin also allows you to set the number of items to return from your feed and if you want to include the captions.
 
 ## ES6 Promise Polyfill
-Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty empty. That's where the ES6 Promise polyfill comes in. That extra 7KB is just for IE.
+Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. That's where the ES6 Promise polyfill comes in. That extra 7KB is just for IE.
 
 ## Changelog
 **1.2**
