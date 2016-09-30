@@ -1,7 +1,7 @@
 {
   "name": "instafetch.js",
   "description": "A 10KB JavaScript plugin for the Instagram API (without jQuery).",
-  "main": "./dist/instafetch.min.js",
+  "main": "./dist/instafetch.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/thomasvaeth/instafetch.js.git"
