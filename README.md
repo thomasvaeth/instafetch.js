@@ -6,7 +6,7 @@ Instafetch.js is available on NPM, Bower, and GitHub.
 
 ### NPM
 ```
-npm install --save instafetch.js
+npm install --save instafetch.js es6-promise
 ```
 
 ```javascript
@@ -52,6 +52,9 @@ The plugin also allows you to set the number of items to return from your feed a
 Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. That's where the ES6 Promise polyfill comes in. That extra 7KB is just for IE.
 
 ## Changelog
+**1.2.2**
+* Fixed installation instructions for NPM
+
 **1.2.1**
 * Published different paths on NPM and Bower
 
