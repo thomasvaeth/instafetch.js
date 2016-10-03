@@ -1,4 +1,7 @@
 # Instafetch.js
+[![Build Status](https://travis-ci.org/thomasvaeth/instafetch.js.svg?branch=master)](https://travis-ci.org/thomasvaeth/instafetch.js)
+[![Dependency Status](https://gemnasium.com/badges/github.com/thomasvaeth/instafetch.js.svg)](https://gemnasium.com/github.com/thomasvaeth/instafetch.js)
+
 Instafetch.js is a 10KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
 
 ## Installation
