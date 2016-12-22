@@ -1,6 +1,6 @@
 'use strict';
 
-require('es6-promise').polyfill();
+var Promise = require('promise-polyfill');
 var fetchJsonp = require('fetch-jsonp');
 
 //
@@ -98,6 +98,10 @@ var checkSettings = function(options) {
  */
 var fetchFeed = function(options) {
   url = baseUrl + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
+
+  if (!window.Promise) {
+    window.Promise = Promise;
+  }
 
   fetchJsonp(url).then(function(response) {
     return response.json();

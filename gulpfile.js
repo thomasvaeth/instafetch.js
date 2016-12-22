@@ -14,13 +14,6 @@ gulp.task('lint', function() {
   .pipe(eslint.failAfterError());
 });
 
-gulp.task('npmPackage', function() {
-  return gulp.src('./src/instafetch-npm.js')
-    .pipe(browserify())
-    .pipe(strip())
-    .pipe(gulp.dest('./'));
-});
-
 gulp.task('bundleScripts', function() {
   return gulp.src('./src/instafetch.js')
     .pipe(browserify())
@@ -35,10 +28,10 @@ gulp.task('minifyBundle', ['bundleScripts'], function() {
   .pipe(gulp.dest('./dist'));
 });
 
-gulp.task('build', ['lint', 'npmPackage', 'minifyBundle']);
+gulp.task('build', ['lint', 'minifyBundle']);
 
 gulp.task('watch', function() {
-  gulp.watch('./src/**/*.js', ['lint', 'npmPackage', 'minifyBundle']);
+  gulp.watch('./src/**/*.js', ['lint', 'minifyBundle']);
 });
 
 gulp.task('default', ['build', 'watch']);

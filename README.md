@@ -2,18 +2,17 @@
 [![Build Status](https://travis-ci.org/thomasvaeth/instafetch.js.svg?branch=master)](https://travis-ci.org/thomasvaeth/instafetch.js)
 [![Dependency Status](https://gemnasium.com/badges/github.com/thomasvaeth/instafetch.js.svg)](https://gemnasium.com/github.com/thomasvaeth/instafetch.js)
 
-Instafetch.js is a 10KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
+Instafetch.js is a 6KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
 
 ## Installation
 Instafetch.js is available on NPM, Bower, and GitHub. 
 
 ### NPM
 ```
-npm install --save instafetch.js es6-promise
+npm install --save instafetch.js
 ```
 
 ```javascript
-require('es6-promise').polyfill();
 require('instafetch.js');
 ```
 
@@ -51,10 +50,14 @@ Instafetch.js will look for an element with the ID of instafetch by default. The
 
 The plugin also allows you to set the number of items to return from your feed and if you want to include the captions.
 
-## ES6 Promise Polyfill
-Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. That's where the ES6 Promise polyfill comes in. That extra 7KB is just for IE.
+## Promise Polyfill
+Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. Version 1.2 included the ES6 Promise polyfill comes in, which added an extra 7KB just for IE. Version 1.3 removed the ES6 Promise polyfill for another Promise polyfill that only added 3KB.
 
 ## Changelog
+**1.3**
+* Removed ES6-Promise polyfill
+* Added [Promise polyfill](https://github.com/taylorhakes/promise-polyfill)
+
 **1.2.2**
 * Fixed installation instructions for NPM
 
