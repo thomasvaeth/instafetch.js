@@ -51,7 +51,7 @@ Instafetch.js will look for an element with the ID of instafetch by default. The
 The plugin also allows you to set the number of items to return from your feed and if you want to include the captions.
 
 ## Promise Polyfill
-Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. Version 1.2 included the ES6 Promise polyfill comes in, which added an extra 7KB just for IE. Version 1.3 removed the ES6 Promise polyfill for another Promise polyfill that only added 3KB.
+Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. Version 1.2 included the ES6-Promise polyfill, which added an extra 7KB just for IE. Version 1.3 removed the ES6-Promise polyfill for another Promise polyfill that only added 3KB.
 
 ## Changelog
 **1.3**
