@@ -5,7 +5,12 @@
 Instafetch.js is a 6KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
 
 ## Installation
-Instafetch.js is available on NPM, Bower, and GitHub. 
+Instafetch.js is available on CDNJS, NPM, Bower, and GitHub. 
+
+### CDNJS
+```html
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/instafetch.js/1.3.0/instafetch.min.js"></script>
+```
 
 ### NPM
 ```
