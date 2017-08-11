@@ -37,6 +37,12 @@ Download the script or the minified version in the ````dist```` folder.
 <script type="text/javascript" src="path/to/instafetch.min.js"></script>
 ```
 
+### CDN
+
+```html
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/instafetch.js@1"></script>
+```
+
 ## Usage
 The Instagram API uses the OAuth 2.0 protocol, so you're going to need an access token. The easiest way to get your access token is login to Instagram on your browser and generate one on [Pixel Union](http://instagram.pixelunion.net/).
 
