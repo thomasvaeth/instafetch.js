@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global, factory) {
   if (typeof define === 'function' && define.amd) {
     define(['exports', 'module'], factory);
@@ -34,7 +34,9 @@
 
   function removeScript(scriptId) {
     var script = document.getElementById(scriptId);
-    document.getElementsByTagName('head')[0].removeChild(script);
+    if (script) {
+      document.getElementsByTagName('head')[0].removeChild(script);
+    }
   }
 
   function fetchJsonp(_url) {
@@ -69,6 +71,9 @@
 
       var jsonpScript = document.createElement('script');
       jsonpScript.setAttribute('src', '' + url + jsonpCallback + '=' + callbackFunction);
+      if (options.charset) {
+        jsonpScript.setAttribute('charset', options.charset);
+      }
       jsonpScript.id = scriptId;
       document.getElementsByTagName('head')[0].appendChild(jsonpScript);
 
@@ -77,7 +82,18 @@
 
         clearFunction(callbackFunction);
         removeScript(scriptId);
+        window[callbackFunction] = function () {
+          clearFunction(callbackFunction);
+        };
       }, timeout);
+
+      jsonpScript.onerror = function () {
+        reject(new Error('JSONP request to ' + _url + ' failed'));
+
+        clearFunction(callbackFunction);
+        removeScript(scriptId);
+        if (timeoutId) clearTimeout(timeoutId);
+      };
     });
   }
 
@@ -301,13 +317,29 @@
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Promise = require('promise-polyfill');
-var fetchJsonp = require('fetch-jsonp');
+var _promisePolyfill = require('promise-polyfill');
+
+var _promisePolyfill2 = _interopRequireDefault(_promisePolyfill);
+
+var _fetchJsonp = require('fetch-jsonp');
+
+var _fetchJsonp2 = _interopRequireDefault(_fetchJsonp);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 
 var instafetch = {};
 var supports = !!document.querySelector && !!document.addEventListener;
-var settings, checked, url, targetEl, article, a, figure, img, div, p;
+var settings = void 0,
+    checked = void 0,
+    url = void 0,
+    targetEl = void 0,
+    article = void 0,
+    a = void 0,
+    figure = void 0,
+    img = void 0,
+    div = void 0,
+    p = void 0;
 var baseUrl = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
 
 var defaults = {
@@ -318,7 +350,7 @@ var defaults = {
 };
 
 
-var forEach = function(collection, callback, scope) {
+var forEach = function forEach(collection, callback, scope) {
   if (Object.prototype.toString.call(collection) === '[object Object]') {
     for (var prop in collection) {
       if (Object.prototype.hasOwnProperty.call(collection, prop)) {
@@ -332,66 +364,67 @@ var forEach = function(collection, callback, scope) {
   }
 };
 
-var extend = function(defaults, options) {
+var extend = function extend(defaults, options) {
   var extended = {};
-  forEach(defaults, function(value, prop) {
+
+  forEach(defaults, function (value, prop) {
     extended[prop] = defaults[prop];
   });
-  forEach(options, function(value, prop) {
+  forEach(options, function (value, prop) {
     extended[prop] = options[prop];
   });
   return extended;
 };
 
-var checkSettings = function(options) {
+var checkSettings = function checkSettings(options) {
   if (typeof options.accessToken !== 'string') {
-    console.log('accessToken must be a string.');
+    console.error('accessToken must be a string.');
     return false;
   }
   if (typeof options.target !== 'string') {
-    console.log('target must be a string.');
+    console.error('target must be a string.');
     return false;
   }
   if (typeof options.numOfPics !== 'number') {
-    console.log('numOfPics must be a number.');
+    console.error('numOfPics must be a number.');
     return false;
   }
   if (typeof options.caption !== 'boolean') {
-    console.log('caption must be a boolean.');
+    console.error('caption must be a boolean.');
     return false;
   }
 
   return true;
 };
 
-var fetchFeed = function(options) {
+var fetchFeed = function fetchFeed(options) {
   url = baseUrl + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
 
   if (!window.Promise) {
-    window.Promise = Promise;
+    window.Promise = _promisePolyfill2.default;
   }
 
-  fetchJsonp(url).then(function(response) {
+  (0, _fetchJsonp2.default)(url).then(function (response) {
     return response.json();
-  }).then(function(json) {
+  }).then(function (json) {
     if (json.meta.code === 200) {
       displayFeed(json, options);
     } else {
-      console.log(json.meta.error_message);
+      console.error(json.meta.error_message);
     }
-  }).catch(function(error) {
-    console.log(error);
+  }).catch(function (error) {
+    console.error(error);
   });
 };
 
-var displayFeed = function(json, options) {
+var displayFeed = function displayFeed(json, options) {
   targetEl = document.getElementById(options.target);
   if (!targetEl) {
-    console.log('No element with id="' + options.target + '" was found on the page.');
+    console.error('No element with id="' + options.target + '" was found on the page.');
     return;
   }
 
-  json.data.forEach(function(data) {
+  json.data.forEach(function (data) {
     article = document.createElement('article');
     a = document.createElement('a');
     a.href = data.link;
@@ -415,7 +448,8 @@ var displayFeed = function(json, options) {
   });
 };
 
-instafetch.destroy = function() {
+instafetch.destroy = function () {
+
   if (!settings) {
     return;
   }
@@ -432,7 +466,8 @@ instafetch.destroy = function() {
   p = null;
 };
 
-instafetch.init = function(options) {
+instafetch.init = function (options) {
+
   if (!supports) {
     return;
   }
@@ -451,4 +486,4 @@ instafetch.init = function(options) {
 
 window.instafetch = instafetch;
 
-},{"fetch-jsonp":1,"promise-polyfill":2}]},{},[3])
+},{"fetch-jsonp":1,"promise-polyfill":2}]},{},[3]);

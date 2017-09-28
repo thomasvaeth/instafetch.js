@@ -1,19 +1,17 @@
-'use strict';
-
-var Promise = require('promise-polyfill');
-var fetchJsonp = require('fetch-jsonp');
+import Promise from 'promise-polyfill';
+import fetchJsonp from 'fetch-jsonp';
 
 //
 // Variables
 //
 
-var instafetch = {};
-var supports = !!document.querySelector && !!document.addEventListener;
-var settings, checked, url, targetEl, article, a, figure, img, div, p;
-var baseUrl = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
+const instafetch = {};
+const supports = !!document.querySelector && !!document.addEventListener;
+let settings, checked, url, targetEl, article, a, figure, img, div, p;
+const baseUrl = 'https://api.instagram.com/v1/users/self/media/recent/?access_token=';
 
 // Default settings
-var defaults = {
+const defaults = {
   accessToken: null,
   target: 'instafetch',
   numOfPics: 20,
@@ -31,15 +29,15 @@ var defaults = {
  * @param {Function} callback Callback function for each iteration
  * @param {Array|Object|NodeList} scope Object/NodeList/Array that forEach is iterating over (aka `this`)
  */
-var forEach = function(collection, callback, scope) {
+const forEach = (collection, callback, scope) => {
   if (Object.prototype.toString.call(collection) === '[object Object]') {
-    for (var prop in collection) {
+    for (const prop in collection) {
       if (Object.prototype.hasOwnProperty.call(collection, prop)) {
         callback.call(scope, collection[prop], prop, collection);
       }
     }
   } else {
-    for (var i = 0, len = collection.length; i < len; i++) {
+    for (let i = 0, len = collection.length; i < len; i++) {
       callback.call(scope, collection[i], i, collection);
     }
   }
@@ -52,12 +50,13 @@ var forEach = function(collection, callback, scope) {
  * @param {Object} options User options
  * @returns {Object} Merged values of defaults and options
  */
-var extend = function(defaults, options) {
-  var extended = {};
-  forEach(defaults, function(value, prop) {
+const extend = (defaults, options) => {
+  const extended = {};
+
+  forEach(defaults, (value, prop) => {
     extended[prop] = defaults[prop];
   });
-  forEach(options, function(value, prop) {
+  forEach(options, (value, prop) => {
     extended[prop] = options[prop];
   });
   return extended;
@@ -67,23 +66,23 @@ var extend = function(defaults, options) {
  * Check typeof of settings
  * @private
  * @param {Object} options Merged values of defaults and options
- * @returns {Boolean} Return false if incorrect
+ * @returns {boolean} Return false if incorrect
  */
-var checkSettings = function(options) {
+const checkSettings = options => {
   if (typeof options.accessToken !== 'string') {
-    console.log('accessToken must be a string.');
+    console.error('accessToken must be a string.');
     return false;
   }
   if (typeof options.target !== 'string') {
-    console.log('target must be a string.');
+    console.error('target must be a string.');
     return false;
   }
   if (typeof options.numOfPics !== 'number') {
-    console.log('numOfPics must be a number.');
+    console.error('numOfPics must be a number.');
     return false;
   }
   if (typeof options.caption !== 'boolean') {
-    console.log('caption must be a boolean.');
+    console.error('caption must be a boolean.');
     return false;
   }
 
@@ -96,23 +95,21 @@ var checkSettings = function(options) {
  * @param {Object} options Merged values of defaults and options
  * @returns {Object} JSON data
  */
-var fetchFeed = function(options) {
-  url = baseUrl + options.accessToken + '&count=' + options.numOfPics + '&callback=?';
+const fetchFeed = options => {
+  url = `${baseUrl + options.accessToken}&count=${options.numOfPics}&callback=?`;
 
   if (!window.Promise) {
     window.Promise = Promise;
   }
 
-  fetchJsonp(url).then(function(response) {
-    return response.json();
-  }).then(function(json) {
+  fetchJsonp(url).then(response => response.json()).then(json => {
     if (json.meta.code === 200) {
       displayFeed(json, options);
     } else {
-      console.log(json.meta.error_message);
+      console.error(json.meta.error_message);
     }
-  }).catch(function(error) {
-    console.log(error);
+  }).catch(error => {
+    console.error(error);
   });
 };
 
@@ -122,14 +119,14 @@ var fetchFeed = function(options) {
  * @param {Object} json JSON data
  * @returns Stop if no element, display if element
  */
-var displayFeed = function(json, options) {
+const displayFeed = (json, options) => {
   targetEl = document.getElementById(options.target);
   if (!targetEl) {
-    console.log('No element with id="' + options.target + '" was found on the page.');
+    console.error(`No element with id="${options.target}" was found on the page.`);
     return;
   }
 
-  json.data.forEach(function(data) {
+  json.data.forEach(data => {
     article = document.createElement('article');
     a = document.createElement('a');
     a.href = data.link;
@@ -157,7 +154,8 @@ var displayFeed = function(json, options) {
  * Destroy the current initialization
  * @public
  */
-instafetch.destroy = function() {
+instafetch.destroy = () => {
+
   // If plugin isn't already initialized, stop
   if (!settings) {
     return;
@@ -181,7 +179,8 @@ instafetch.destroy = function() {
  * @public
  * @param {Object} options User settings
  */
-instafetch.init = function(options) {
+instafetch.init = options => {
+
   // Feature test
   if (!supports) {
     return;
