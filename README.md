@@ -9,7 +9,7 @@ Instafetch.js is available on CDNJS, NPM, Bower, and GitHub.
 
 ### CDNJS
 ```html
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/instafetch.js/1.3.0/instafetch.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/instafetch.js/1.4.0/instafetch.min.js"></script>
 ```
 
 ### NPM
@@ -59,6 +59,10 @@ The plugin also allows you to set the number of items to return from your feed a
 Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. Version 1.2 included the ES6-Promise polyfill, which added an extra 7KB just for IE. Version 1.3 removed the ES6-Promise polyfill for another Promise polyfill that only added 3KB.
 
 ## Changelog
+**1.4**
+* Updated Fetch-JSONP
+* Switched from ES5 to ES6
+
 **1.3**
 * Removed ES6-Promise polyfill
 * Added [Promise polyfill](https://github.com/taylorhakes/promise-polyfill)
