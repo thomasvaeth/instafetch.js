@@ -440,7 +440,7 @@ var displayFeed = function displayFeed(json, options) {
     a.appendChild(figure);
     article.appendChild(a);
 
-    if (options.caption) {
+    if (options.caption && data.caption) {
       div = document.createElement('div');
       p = document.createElement('p');
       p.innerHTML = data.caption.text;

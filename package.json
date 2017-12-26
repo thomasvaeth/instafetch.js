@@ -1,6 +1,6 @@
 {
   "name": "instafetch.js",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "A 6KB JavaScript plugin for the Instagram API (without jQuery).",
   "main": "./dist/instafetch.js",
   "repository": {
