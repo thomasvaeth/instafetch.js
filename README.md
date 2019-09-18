@@ -5,7 +5,7 @@
 Instafetch.js is a 6KB JavaScript plugin for the Instagram API using fetch instead of jQuery.
 
 ## Installation
-Instafetch.js is available on CDNJS, NPM, Bower, and GitHub. 
+Instafetch.js is available on CDNJS, NPM, Bower, and GitHub.
 
 ### CDNJS
 ```html
@@ -53,7 +53,21 @@ The Instagram API uses the OAuth 2.0 protocol, so you're going to need an access
 
 Instafetch.js will look for an element with the ID of instafetch by default. The target element can be changed when initializing the plugin.
 
-The plugin also allows you to set the number of items to return from your feed and if you want to include the captions.
+### Options
+
+| Name              | Description | Default Value |
+| ----------------- | ----------- | ------------- |
+| `accessToken`     | Generate this on [Pixel Union](http://instagram.pixelunion.net/) | `null` |
+| `target`          | id of the element to insert the images into | `'instafetch'` |
+| `numOfPics`       | Maximum number of pictures to display | `20` |
+| `caption`         | Whether to generate markup text | `false` |
+| `articleClassName`| ClassName for the article tags | `null` |
+| `aClassName`      | ClassName for the a tags | `null` |
+| `figureClassName` | ClassName for the figure tags | `null` |
+| `imgClassName`    | ClassName for the img tags | `null` |
+| `divClassName`    | ClassName for the div tag of the captions | `null` |
+| `pClassName`      | ClassName for the p tag of the captions | `null` |
+| `imgLazyLoad`     | If true, the src of the image is replaced with a data-src, for use with Lazy Loading. (e.g. [lazyload](https://github.com/verlok/lazyload))| `false` |
 
 ## Promise Polyfill
 Instafetch.js was only 3KB initially, but those 3KB didn't support any version of Internet Explorer. IE will return "Promise is undefined" and the Instagram feed will be empty. Version 1.2 included the ES6-Promise polyfill, which added an extra 7KB just for IE. Version 1.3 removed the ES6-Promise polyfill for another Promise polyfill that only added 3KB.

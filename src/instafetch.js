@@ -15,7 +15,14 @@ const defaults = {
   accessToken: null,
   target: 'instafetch',
   numOfPics: 20,
-  caption: false
+  caption: false,
+  articleClassName: null,
+  aClassName: null,
+  figureClassName: null,
+  imgClassName: null,
+  divClassName: null,
+  pClassName: null,
+  imgLazyLoad: false
 };
 
 //
@@ -128,19 +135,45 @@ const displayFeed = (json, options) => {
 
   json.data.forEach(data => {
     article = document.createElement('article');
+    if (options.articleClassName) {
+      article.className = options.articleClassName;
+    }
+
     a = document.createElement('a');
+    if (options.aClassName) {
+      a.className = options.aClassName;
+    }
     a.href = data.link;
     a.target = '_blank';
+
     figure = document.createElement('figure');
+    if (options.figureClassName) {
+      figure.className = options.figureClassName;
+    }
+
     img = document.createElement('img');
-    img.src = data.images.standard_resolution.url;
+    if (options.imgClassName) {
+      img.className = options.imgClassName;
+    }
+    if (options.imgLazyLoad === true) {
+      img.setAttribute('data-src', data.images.standard_resolution.url);
+    } else {
+      img.src = data.images.standard_resolution.url;
+    }
+
     figure.appendChild(img);
     a.appendChild(figure);
     article.appendChild(a);
 
     if (options.caption && data.caption) {
       div = document.createElement('div');
+      if (options.divClassName) {
+        div.className = options.divClassName;
+      }
       p = document.createElement('p');
+      if (options.pClassName) {
+        p.className = options.pClassName;
+      }
       p.innerHTML = data.caption.text;
       div.appendChild(p);
       a.appendChild(div);
